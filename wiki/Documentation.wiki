@@ -1,5 +1,3 @@
-==Documentation==
-
 ===Methods===
 
 Declare class with the following arguments :
