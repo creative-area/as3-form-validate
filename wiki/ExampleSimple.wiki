@@ -1,0 +1,54 @@
+#summary How-to with a basic example
+
+==Simple Example==
+
+In Flash IDE :
+
+  * Create two dynamic TextFields and name them "name" and "email" (form input field).
+  * Create a dynamic TextField and name it "msg" (display messages : error or success).
+  * Drop a button and name it "submit".
+  * Write code :
+
+{{{
+// import class
+import com.creativearea.FormValidate;
+
+// form config
+var f_config = {
+	errorTextField:'msg',
+	fields:{
+		name:{
+			rules:{
+				required:true
+			},
+			msg:{
+				required:"Name is required !"
+			}
+		},
+		email:{
+			rules:{
+				required: true,
+				email: true
+			},
+			msg:{
+				required:"Email is required !",
+				email:"Email must be valid !"
+			}
+		}
+	}
+};
+
+// declare new form
+var f = new com.creativearea.FormValidate(this, f_config);
+
+// validation button
+function f_submit(e:MouseEvent){
+	f.showMessage('verif form ...');
+	if ( f.validate() ) {
+		f.showMessage('form ok !');
+	} else {
+		f.showMessage(f.getErrors().join(', '));
+	}
+}
+this.submit.addEventListener(MouseEvent.CLICK, f_submit);
+}}}
