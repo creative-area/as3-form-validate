@@ -1,0 +1,110 @@
+#summary Documentation
+
+==Documentation==
+
+===Methods===
+
+Declare class with the following arguments :
+
+  * rootMovieClip : name of the MovieClip that contains the TextFields of the form.
+  * configParams : config object (see configuration on next section)
+
+{{{
+var f = new com.creativearea.FormValidate(rootMovieClip, configParams);
+}}}
+
+Check if form is valid with :
+{{{
+public function validate():Boolean
+}}}
+
+If form is not valide, return false. Errors can be get with :
+
+{{{
+public function getErrors():Array
+}}}
+
+You can display message with :
+
+{{{
+public function showMessage(message:String):void
+}}}
+
+To send form to url (POST for now), use :
+
+{{{
+public function submit(callback:Function):void
+}}}
+
+You can add values before POST with :
+
+{{{
+public function addValues(values:Object):void
+}}}
+
+===Configuration===
+
+{{{
+params :
+{
+	url:"url"
+	stopOnError:Boolean,
+	errorTextField:"textfield_name", // if textfield is not directly in this.root, reassign showMessage function
+	fields:{
+		field_name:{
+			label:"display_name",
+			path:"path_to_field",
+			rules:{
+				required:Boolean,
+				email: Boolean,
+				minlength:Number,
+				maxlength:Number,
+				equalto:"field_name",
+				date:Boolean, // dd/mm/yyyy
+				serverdate:Boolean, // yyyy-mm-dd
+				ofage:Boolean // age not under 18
+			},
+			msg:{
+				required:"Message"
+			}
+			tabIndex:Number // tabulation index
+			cbGet:Boolean // call a method named "getValue_[field_name]()" to render the value. 
+				// called internaly before rules validation
+			cbSend:"method_name" // call a method named "[method_name]" to trasform the value.
+					// called internaly before submit. the return value remplace the get value.
+		},
+	}
+}
+}}}
+
+===Configuration detail===
+
+Features in config param (key : (TypeOfValue)value) :
+
+  * fields : (Object)fields config (see next section)
+  * errorTextField : (String)Name of the dynamic TextField (display messages)
+  * stopOnError : (Boolean)Stop validating on first error
+  * url : (String)Url of web page to POST form fields.
+
+Features in field validation config :
+
+The fields config is an Object : each key is the name of the MovieClip toi validate and the corresponding value is the validation options.
+
+Availables options (key : (TypeOfValue)value) :
+
+  * label : (String)Name of the field (used in error messages). If not set, the name of the MovieClip is used.
+  * rules : collection of key/value. The rules to validate. You can associate each rule with a message (msg).
+  * msg : collection of key/value. The error messages displayed if corresponding rule is not validated.
+  * cbGet : (Boolean|String)field name. Call a method named getValue_"field_name"() to render the value. Called internaly before rules validation.
+  * cbSend : (String)method name. Call a method named "method name" to transform the value. Called internaly before submit. The return value remplace the get value.
+
+Availables rules (key : (TypeOfValue)value) :
+
+  * required: Boolean,
+  * email: Boolean,
+  * minlength: Number,
+  * maxlength: Number,
+  * equalto: "field_name",
+  * date: Boolean, // dd/mm/yyyy
+  * serverdate: Boolean, // yyyy-mm-dd
+  * ofage: Boolean // age not under 18
