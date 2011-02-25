@@ -1,48 +1,83 @@
 #labels Featured
-===Methods===
+===FormValidate class===
 
-Declare class with the following arguments :
-
-  * rootMovieClip : name of the MovieClip that contains the TextFields of the form.
-  * configParams : config object (see configuration on next section)
+====Constructor====
 
 {{{
-var f = new com.creativearea.FormValidate(rootMovieClip, configParams);
+FormValidate(rootMovieClip:MovieClip, configParams:Object);
 }}}
 
-Check if form is valid with :
+  rootMovieClip : name of the MovieClip that contains the TextFields of the form.
+
+  configParams : config object (see configuration on next section)
+
+====Properties====
+
 {{{
-public function validate():Boolean
+root:MovieClip
 }}}
 
-If form is not valide, return false. Errors can be get with :
+  name of the MovieClip that contains the TextFields of the form.
 
 {{{
-public function getErrors():Array
+config:Object
 }}}
 
-You can display message with :
+  config object (see configuration on next section)
 
 {{{
-public function showMessage(message:String):void
+onSubmitError:Function(errors:Object)
 }}}
 
-To send form to url (POST for now), use :
+  assign new callback function on submit error. argument is an object with _type_ (String) and _message_ (String) properties.
 
 {{{
-public function submit(callback:Function):void
+showMessage:Function(message:String)
 }}}
 
-You can add values before POST with :
+  replace internal _showMessage_ method by the function in argument.
+
+====Methods====
 
 {{{
-public function addValues(values:Object):void
+validate():Boolean
 }}}
 
-===Configuration===
+  return true if the form is valid, otherwise false
 
 {{{
-params :
+getErrors():Array
+}}}
+
+  return indexed array of error messages.
+
+{{{
+showMessage(message:String):void
+}}}
+
+  message : string to be displayed. by default, it use _trace()_ function. if params _errorTextField_ is set, it use this textField to render the message.
+
+{{{
+submit(callback:Function):void
+}}}
+
+  callback : function called on the _Event.COMPLETE_ (get result of the posted values)
+
+  send form fields values using POST method to the _url_ param (see config object). if a _cbSend_ param is defined for a field, a method with the name of the param will be call before value is sent. this function must get one argument (the value) and must return the transformed (or not) value.
+
+{{{
+addValues(values:Object):void
+}}}
+
+  values : an object that will be added to the POST values. these values are added before the send, but after getting values from the form
+  
+
+===Config Object===
+
+the configParams is an object like this (all features availables are listed) :
+
+{{{
+configParams =
 {
 	url:"url"
 	stopOnError:Boolean,
